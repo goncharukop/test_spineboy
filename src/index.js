@@ -7,14 +7,15 @@ document.body.appendChild(app.view);
 
 app.loader
     .add('character', 'assets/spineboy.json')
-    .load(function (loader, resources) {
+    .load(function () {
         const mainScreen = new Graphics();
         mainScreen.lineStyle(5, 0xffffff, 0.9);
         mainScreen.beginFill(0x444444);
         mainScreen.drawRoundedRect(20,20,500,400,10);
 
         app.stage.addChild(mainScreen);
-
+    })
+    .load(function (loader, resources) {
         const person = new Spine(resources.character.spineData);
         person.x = 250;
         person.y = 400;
@@ -189,9 +190,19 @@ app.loader
         startText.y = startButton.y + (startButton.height - startText.height) / 2;
         app.stage.addChild(startText);
 
+
+        function addMainScreen() {
+          const mainScreen = new Graphics();
+          mainScreen.lineStyle(5, 0xffffff, 0.9);
+          mainScreen.beginFill(0x444444);
+          mainScreen.drawRoundedRect(20,20,500,400,10);
+  
+          app.stage.addChild(mainScreen);
+        }
+
         function setSkinByName(skinName) {
-            skeleton.setSkin(null);
-            skeleton.setSkinByName(skinName);
+          skeleton.setSkin(null);
+          skeleton.setSkinByName(skinName);
         }
 
 
