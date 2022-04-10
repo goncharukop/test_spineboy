@@ -25,91 +25,6 @@ app.loader
 
         app.stage.addChild(person);
 
-        const skinButton1 = new Graphics();
-        skinButton1.lineStyle(2.5, 0xffffff, 0.9);
-        skinButton1.beginFill(0x444444);
-        skinButton1.drawRect(0,0,180,50);
-        skinButton1.x = 580;
-        skinButton1.y = 100;
-
-        app.stage.addChild(skinButton1);
-        skinButton1.buttonMode = true;
-        skinButton1.interactive = true;
-
-        skinButton1.addListener('pointerdown', () => {
-            setSkinByName('testSkin1');
-        });
-
-        const skinButton2 = new Graphics();
-        skinButton2.lineStyle(2.5, 0xffffff, 0.9);
-        skinButton2.beginFill(0x444444);
-        skinButton2.drawRect(0,0,180,50);
-        skinButton2.x = 580;
-        skinButton2.y = 152.5;
-
-        app.stage.addChild(skinButton2);
-        skinButton2.buttonMode = true;
-        skinButton2.interactive = true;
-        skinButton2.addListener('pointerdown', () => {
-            setSkinByName('testSkin2');
-        });
-
-        const skinButton3 = new Graphics();
-        skinButton3.lineStyle(2.5, 0xffffff, 0.9);
-        skinButton3.beginFill(0x444444);
-        skinButton3.drawRect(0,0,180,50);
-        skinButton3.x = 580;
-        skinButton3.y = 205;
- 
-        app.stage.addChild(skinButton3);
-        skinButton3.buttonMode = true;
-        skinButton3.interactive = true;
-        skinButton3.addListener('pointerdown', () => {
-            setSkinByName('default');
-        });
-
-        const animationButton1 = new Graphics();
-        animationButton1.lineStyle(2.5, 0xffffff, 0.9);
-        animationButton1.beginFill(0x444444);
-        animationButton1.drawRect(0,0,180,50);
-        animationButton1.x = 580;
-        animationButton1.y = 350;
-
-        app.stage.addChild(animationButton1);
-        animationButton1.buttonMode = true;
-        animationButton1.interactive = true;
-        animationButton1.addListener('pointerdown', () => {
-            person.state.setAnimation(0, 'walk', true);
-        });
-
-        const animationButton2 = new Graphics();
-        animationButton2.lineStyle(2.5, 0xffffff, 0.9);
-        animationButton2.beginFill(0x444444);
-        animationButton2.drawRect(0,0,180,50);
-        animationButton2.x = 580;
-        animationButton2.y = 402.5;
-
-        app.stage.addChild(animationButton2);
-        animationButton2.buttonMode = true;
-        animationButton2.interactive = true;
-        animationButton2.addListener('pointerdown', () => {
-            person.state.setAnimation(0, 'jump', true);
-        });
-
-        const animationButton3 = new Graphics();
-        animationButton3.lineStyle(2.5, 0xffffff, 0.9);
-        animationButton3.beginFill(0x444444);
-        animationButton3.drawRect(0,0,180,50);
-        animationButton3.x = 580;
-        animationButton3.y = 455;
-
-        app.stage.addChild(animationButton3);
-        animationButton3.buttonMode = true;
-        animationButton3.interactive = true;
-        animationButton3.addListener('pointerdown', () => {
-            person.state.setAnimation(0, 'jump', false);
-        });
-
         const startButton = new Graphics();
         startButton.lineStyle(2.5, 0xffffff, 0.9);
         startButton.beginFill(0x444444);
@@ -155,50 +70,60 @@ app.loader
         title2.y = 295;
         app.stage.addChild(title2);
 
-        const skinText1 = new PIXI.Text('skin 1', styleButtonText);
-        skinText1.x = skinButton1.x + 20;
-        skinText1.y = skinButton1.y + (skinButton1.height - skinText1.height) / 2;
-        app.stage.addChild(skinText1);
+//Set skins
+        person.skeleton.data.skins.forEach((el, i) => {
+          const buttonText = new PIXI.Text(el.name, styleButtonText);
+          const skinButton = new Graphics();
 
-        const skinText2 = new PIXI.Text('skin 2', styleButtonText);
-        skinText2.x = skinButton2.x + 20;
-        skinText2.y = skinButton2.y + (skinButton2.height - skinText2.height) / 2;
-        app.stage.addChild(skinText2);
+          skinButton.lineStyle(2.5, 0xffffff, 0.9);
+          skinButton.beginFill(0x444444);
+          skinButton.drawRect(0,0,180,50);
+          skinButton.x = 580;
+          skinButton.y = 100 + 52.5 * i;
 
-        const skinText3 = new PIXI.Text('skin 3', styleButtonText);
-        skinText3.x = skinButton3.x + 20;
-        skinText3.y = skinButton3.y + (skinButton3.height - skinText3.height) / 2;
-        app.stage.addChild(skinText3);
+          app.stage.addChild(skinButton);
 
-        const animationText1 = new PIXI.Text('walk', styleButtonText);
-        animationText1.x = animationButton1.x + 20;
-        animationText1.y = animationButton1.y + (animationButton1.height - animationText1.height) / 2;
-        app.stage.addChild(animationText1);
+          buttonText.x = skinButton.x + 20;
+          buttonText.y = skinButton.y + (skinButton.height - buttonText.height) / 2;
+          
+          app.stage.addChild(buttonText);
 
-        const animationText2 = new PIXI.Text('jumping', styleButtonText);
-        animationText2.x = animationButton2.x + 20;
-        animationText2.y = animationButton2.y + (animationButton2.height - animationText2.height) / 2;
-        app.stage.addChild(animationText2);
+          skinButton.buttonMode = true;
+          skinButton.interactive = true;
+          skinButton.addListener('pointerdown', () => {
+              setSkinByName(el.name);
+          });
+        })
 
-        const animationText3 = new PIXI.Text('1 jump', styleButtonText);
-        animationText3.x = animationButton3.x + 20;
-        animationText3.y = animationButton3.y + (animationButton3.height - animationText3.height) / 2;
-        app.stage.addChild(animationText3);
+//Set animations
+        person.skeleton.data.animations.forEach((el, i) => {
+          const buttonText = new PIXI.Text(el.name, styleButtonText);
+          const animationButton = new Graphics();
+
+          animationButton.lineStyle(2.5, 0xffffff, 0.9);
+          animationButton.beginFill(0x444444);
+          animationButton.drawRect(0,0,180,50);
+          animationButton.x = 580;
+          animationButton.y = 350 + 52.5 * i;
+
+          app.stage.addChild(animationButton);
+
+          buttonText.x = animationButton.x + 20;
+          buttonText.y = animationButton.y + (animationButton.height - buttonText.height) / 2;
+          
+          app.stage.addChild(buttonText);
+
+          animationButton.buttonMode = true;
+          animationButton.interactive = true;
+          animationButton.addListener('pointerdown', () => {
+              person.state.setAnimation(0, el.name, true);
+          });
+        })
 
         const startText = new PIXI.Text('pause / play', styleButtonText);
         startText.x = startButton.x + 20;
         startText.y = startButton.y + (startButton.height - startText.height) / 2;
         app.stage.addChild(startText);
-
-
-        function addMainScreen() {
-          const mainScreen = new Graphics();
-          mainScreen.lineStyle(5, 0xffffff, 0.9);
-          mainScreen.beginFill(0x444444);
-          mainScreen.drawRoundedRect(20,20,500,400,10);
-  
-          app.stage.addChild(mainScreen);
-        }
 
         function setSkinByName(skinName) {
           skeleton.setSkin(null);

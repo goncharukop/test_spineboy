@@ -94,7 +94,7 @@
             "right-hand": { "x": 6.82, "y": 1.25, "rotation": 91.96, "width": 32, "height": 32 }
         }
     },
-    "testSkin1": {
+    "big arms": {
       "left shoulder": {
           "left-shoulder": { "x": 23.74, "y": 0.11, "rotation": 62.01, "width": 34, "height": 53 }
       },
@@ -149,7 +149,7 @@
           "right-hand": { "x": -6.82, "y": 25.25, "rotation": 191.96, "width": 62, "height": 62 }
       }
     },
-    "testSkin2": {
+    "small dress": {
       "left shoulder": {
           "left-shoulder": { "x": 23.74, "y": 0.11, "rotation": 62.01, "width": 34, "height": 53 }
       },
