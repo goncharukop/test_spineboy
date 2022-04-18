@@ -38,9 +38,15 @@ app.loader
 
         let onPauseNow = true;
         startButton.addListener('pointerdown', () => {
-            onPauseNow
-                ? person.state.timeScale = 0
-                : person.state.timeScale = 1;
+            if (onPauseNow) {
+              person.state.timeScale = 0;
+              startText.text = 'play';
+            }
+
+            else {
+              person.state.timeScale = 1;
+              startText.text = 'pause';
+            }
 
             onPauseNow = !onPauseNow;
         });
