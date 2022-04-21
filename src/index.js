@@ -130,7 +130,9 @@ app.loader
           animationButton.interactive = true;
           animationButton.addListener('pointerdown', () => {
             person.state.setAnimation(0, el.name, true);
-            person.state.timeScale = 1;
+            onPauseNow
+              ? person.state.timeScale = 1
+              : person.state.timeScale = 0;
           });
         })
 
