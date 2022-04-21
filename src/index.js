@@ -1,17 +1,24 @@
 import * as PIXI from 'pixi.js';
 import { Spine } from 'pixi-spine';
+import { EventSystem } from '@pixi/events';
 import { Graphics } from 'pixi.js';
+
+delete PIXI.Renderer.__plugins.interaction;
 
 const app = new PIXI.Application();
 document.body.appendChild(app.view);
+
+if (!('events' in app.renderer)) {
+  app.renderer.addSystem(EventSystem, 'events');
+}
 
 app.loader
     .add('character', 'assets/spineboy.json')
     .load(function () {
         const mainScreen = new Graphics();
-        mainScreen.lineStyle(5, 0xffffff, 0.9);
-        mainScreen.beginFill(0x444444);
-        mainScreen.drawRoundedRect(20,20,500,400,10);
+        mainScreen.lineStyle(5, 0xffffff, 0.9)
+          .beginFill(0x444444)
+          .drawRoundedRect(20,20,500,400,10);
 
         app.stage.addChild(mainScreen);
     })
@@ -26,9 +33,9 @@ app.loader
         app.stage.addChild(person);
 
         const startButton = new Graphics();
-        startButton.lineStyle(2.5, 0xffffff, 0.9);
-        startButton.beginFill(0x444444);
-        startButton.drawRect(0,0,180,50);
+        startButton.lineStyle(2.5, 0xffffff, 0.9)
+          .beginFill(0x444444)
+          .drawRect(0,0,180,50);
         startButton.x = 20;
         startButton.y = 450;
 //Start pause button
@@ -38,32 +45,32 @@ app.loader
 
         let onPauseNow = true;
         startButton.addListener('pointerdown', () => {
-            if (onPauseNow) {
-              person.state.timeScale = 0;
-              startText.text = 'play';
-            }
+          if (onPauseNow) {
+            person.state.timeScale = 0;
+            startText.text = 'play';
+          }
 
-            else {
-              person.state.timeScale = 1;
-              startText.text = 'pause';
-            }
+          else {
+            person.state.timeScale = handle.position.x / 100;
+            startText.text = 'pause';
+          }
 
-            onPauseNow = !onPauseNow;
+          onPauseNow = !onPauseNow;
         });
 
 //style text
         const styleTitleText = new PIXI.TextStyle({
-            fontFamily: 'Helvetica',
-            fontSize: 36,
-            fontStyle: 'italic',
-            fill: ['#FFFFFF'],
+          fontFamily: 'Helvetica',
+          fontSize: 36,
+          fontStyle: 'italic',
+          fill: ['#FFFFFF'],
         });
 
         const styleButtonText = new PIXI.TextStyle({
-            fontFamily: 'Helvetica',
-            fontSize: 26,
-            fontStyle: 'italic',
-            fill: ['#FFFFFF'],
+          fontFamily: 'Helvetica',
+          fontSize: 26,
+          fontStyle: 'italic',
+          fill: ['#FFFFFF'],
         });
 
         const title1 = new PIXI.Text('skins', styleTitleText);
@@ -81,9 +88,9 @@ app.loader
           const buttonText = new PIXI.Text(el.name, styleButtonText);
           const skinButton = new Graphics();
 
-          skinButton.lineStyle(2.5, 0xffffff, 0.9);
-          skinButton.beginFill(0x444444);
-          skinButton.drawRect(0,0,180,50);
+          skinButton.lineStyle(2.5, 0xffffff, 0.9)
+            .beginFill(0x444444)
+            .drawRect(0,0,180,50);
           skinButton.x = 580;
           skinButton.y = 100 + 52.5 * i;
 
@@ -97,7 +104,7 @@ app.loader
           skinButton.buttonMode = true;
           skinButton.interactive = true;
           skinButton.addListener('pointerdown', () => {
-              setSkinByName(el.name);
+            setSkinByName(el.name);
           });
         })
 
@@ -106,9 +113,9 @@ app.loader
           const buttonText = new PIXI.Text(el.name, styleButtonText);
           const animationButton = new Graphics();
 
-          animationButton.lineStyle(2.5, 0xffffff, 0.9);
-          animationButton.beginFill(0x444444);
-          animationButton.drawRect(0,0,180,50);
+          animationButton.lineStyle(2.5, 0xffffff, 0.9)
+            .beginFill(0x444444)
+            .drawRect(0,0,180,50);
           animationButton.x = 580;
           animationButton.y = 350 + 52.5 * i;
 
@@ -122,7 +129,8 @@ app.loader
           animationButton.buttonMode = true;
           animationButton.interactive = true;
           animationButton.addListener('pointerdown', () => {
-              person.state.setAnimation(0, el.name, true);
+            person.state.setAnimation(0, el.name, true);
+            person.state.timeScale = 1;
           });
         })
 
@@ -136,47 +144,28 @@ app.loader
           skeleton.setSkinByName(skinName);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 //slider
         const slider = app.stage.addChild(
-            new PIXI.Graphics()
-                .beginFill(0xffffff)
-                .drawRect(0, 0, 200, 3,)
-                .endFill(),
+          new PIXI.Graphics()
+            .beginFill(0xffffff)
+            .drawRect(0, 0, 200, 3)
+            .endFill(),
         );
 
         slider.position.set(275, 475);
 
         slider
-            .beginFill(0xffffff, 0.1)
-            .drawRect( -10, -10, 220, 20)
-            .endFill();
+          .beginFill(0xffffff, 0)
+          .drawRect( -10, -10, 220, 20)
+          .endFill();
 
         slider.interactive = true;
 
-
         const handle = slider.addChild(
-            new PIXI.Graphics()
-                .beginFill(0xffffff)
-                .drawCircle(0, 0, 8)
-                .endFill(),
+          new PIXI.Graphics()
+            .beginFill(0xffffff)
+            .drawCircle(0, 0, 8)
+            .endFill(),
         );
 
         handle.interactive = true;
@@ -196,23 +185,24 @@ app.loader
           app.stage.removeEventListener('pointermove', onDrag);
         }
 
-        // Update the handle's position & bunny's scale when the handle is moved.
+        // Update the handle's position & change speed when the handle is moved.
         function onDrag(e) {
           // Set handle x-position to match pointer
           handle.position.x = Math.max(
               0,
               Math.min(
-                  slider.toLocal(e.global).x,
-                  0
+                slider.toLocal(e.global).x,
+                200
               )
           );
           onHandleMoved();
         }
 
         function onHandleMoved() {
-          person.state.timeScale = handle.position.x / 100;
+          onPauseNow
+            ? person.state.timeScale = handle.position.x / 100
+            : person.state.timeScale = 0
         }
-
 
         app.start( );
     });
