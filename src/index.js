@@ -157,8 +157,8 @@ app.loader
         slider.position.set(275, 475);
 
         slider
-          .beginFill(0xffffff, 0)
-          .drawRect( -10, -10, 220, 20)
+          .beginFill(0xffffff, 0.001)
+          .drawRect( -10, -50, 220, 180)
           .endFill();
 
         slider.interactive = true;
